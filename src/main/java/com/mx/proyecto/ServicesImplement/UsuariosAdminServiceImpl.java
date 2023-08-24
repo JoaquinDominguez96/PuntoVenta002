@@ -28,7 +28,7 @@ public class UsuariosAdminServiceImpl implements UsuariosAdminService{
 	@Override
 	public List<UsuariosAdmin> getUsuariosPorEdad(UsuariosAdminDTO nuevoUsuarioPorEdad){ // desarrollo del metodo
 		
-		List<UsuariosAdmin> listUsuarios = usuariosAdminDAO.obtenerTodosLosDatosPorEdad();
+		List<UsuariosAdmin> listUsuarios = usuariosAdminDAO.obtenerTodosLosDatosPorEdad(nuevoUsuarioPorEdad.getEdad());
 		
 		return listUsuarios;
 	}

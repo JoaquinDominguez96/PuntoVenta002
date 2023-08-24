@@ -12,7 +12,7 @@ public interface UsuariosAdminDAO {
 
 	Integer actualizaInfo(UsuariosAdmin datos);
 
-	List<UsuariosAdmin> obtenerTodosLosDatosPorEdad();
+	List<UsuariosAdmin> obtenerTodosLosDatosPorEdad(int edad);
 
 
 }

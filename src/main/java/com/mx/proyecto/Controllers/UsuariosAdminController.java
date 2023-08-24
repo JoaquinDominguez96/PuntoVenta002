@@ -43,7 +43,7 @@ public class UsuariosAdminController {
 		}
 		
 		@ResponseBody
-		@RequestMapping(value="/getUsuariosAdminPorEdad", method= RequestMethod.GET, produces = "application/json")
+		@RequestMapping(value="/getUsuariosAdminPorEdad", method= RequestMethod.POST, produces = "application/json")
 		ResponseEntity < List<UsuariosAdmin> > getUsuariosAdminPorEdad(@RequestBody UsuariosAdminDTO nuevoUsuarioPorEdad){
 			final HttpHeaders httpHeaders = new HttpHeaders();
 			

@@ -7,11 +7,17 @@ public interface MisEmpleadosService {
 
 	ResponseDto getEmpleados();
 
-	ResponseDto insertMisEmpleados(MisEmpleadosDTO nuevoEmpleado);
+	ResponseDto insertMisEmpleados(MisEmpleadosDTO nuevoEmpleadoRfcYCurp);
 
 	ResponseDto eliminarMiEmpleado(MisEmpleadosDTO idMiEmpleado);
 
 	ResponseDto actualizarDatosMisEmpleados(MisEmpleadosDTO datos);
+
+	ResponseDto getEmpleadosMasculinos();
+
+	ResponseDto getEmpleadosF35();
+
+	ResponseDto getEmpleadosRFC(MisEmpleadosDTO nuevoEmpleadoRfc);
 
 	
 

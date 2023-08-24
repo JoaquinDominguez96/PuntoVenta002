@@ -34,18 +34,37 @@ public class MisEmpleadosController {
 			
 			return misEmpleadosService.getEmpleados();
 		}
+		
+		@ResponseBody
+		@RequestMapping(value="/getMisEmpleadosMasculinos", method= RequestMethod.GET, produces = "application/json")
+		public ResponseDto getMisEmpleadosMasculinos() {
+			
+			return misEmpleadosService.getEmpleadosMasculinos();
+		}
+		
+		@ResponseBody
+		@RequestMapping(value="/getMisEmpleadosF35", method= RequestMethod.GET, produces = "application/json")
+		public ResponseDto getMisEmpleadosF35() {
+			
+			return misEmpleadosService.getEmpleadosF35();
+		}
 	
-	
+		@ResponseBody
+		@RequestMapping(value="/getMisEmpleadosRFC", method= RequestMethod.POST, produces = "application/json")
+		public ResponseDto getMisEmpleadosRFC(@RequestBody MisEmpleadosDTO nuevoEmpleadoRfc) {
+			System.out.println(nuevoEmpleadoRfc);
+			return misEmpleadosService.getEmpleadosRFC(nuevoEmpleadoRfc);
+		}
 		
 		
 		
 		// Servicio para inserta un nuevo usuario
 		@ResponseBody
 		@RequestMapping(value="/insertMisEmpleados", method= RequestMethod.POST, produces = "application/json")
-		ResponseEntity <ResponseDto> insertMisEmpleados(@RequestBody MisEmpleadosDTO nuevoEmpleado){
+		ResponseEntity <ResponseDto> insertMisEmpleados(@RequestBody MisEmpleadosDTO nuevoEmpleadoRfcYCurp){
 			final HttpHeaders httpHeaders = new HttpHeaders();
 			
-			ResponseDto response = misEmpleadosService.insertMisEmpleados(nuevoEmpleado);
+			ResponseDto response = misEmpleadosService.insertMisEmpleados(nuevoEmpleadoRfcYCurp);
 			
 			httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 			

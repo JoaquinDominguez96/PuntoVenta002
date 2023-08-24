@@ -38,57 +38,121 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 	}
 
 	@Override
-	public ResponseDto insertMisEmpleados(MisEmpleadosDTO nuevoEmpleado) {
+	public ResponseDto getEmpleadosMasculinos() {
+		ResponseDto response = new ResponseDto();
+		try {
+			List<MisEmpleados> listaMisEmpleadosMasc = misEmpleadosDAO.obtieneMisEmpleadosMasculinos();
+			System.out.println(listaMisEmpleadosMasc);
+			if (listaMisEmpleadosMasc.isEmpty()) {
+				response.setCode(100);
+				response.setMessage(" No existen registros en la tabla Mis_Empleados. ");
+			} else {
+				response.setCode(200);
+				response.setMessage(" Lista de Empleados de sexo masculino son: ");
+				response.setList(listaMisEmpleadosMasc);
+			}
+		} catch (Exception e) {
+			response.setCode(500);
+			response.setMessage(" Ocurrios un error en el metodos getEmpleadosMasculinos en la clase MisEmpleadosServiceImpl");
+		}
+		
+		return response;
+	}
+
+	@Override
+	public ResponseDto getEmpleadosF35() {
+		ResponseDto response = new ResponseDto();
+		try {
+			List<MisEmpleados> listaMisEmpleadosF35 = misEmpleadosDAO.obtieneMisEmpleadosF35();
+			System.out.println(listaMisEmpleadosF35);
+			if (listaMisEmpleadosF35 == null && listaMisEmpleadosF35.isEmpty()) {
+				response.setCode(100);
+				response.setMessage(" No existen registros en la tabla Mis_Empleados. ");
+			} else {
+				response.setCode(200);
+				response.setMessage(" Lista de Empleados de sexo femenino y de 35 años de edad son: ");
+				response.setList(listaMisEmpleadosF35);
+			}
+		} catch (Exception e) {
+			response.setCode(500);
+			response.setMessage(" Ocurrios un error en el metodos getEmpleadosMasculinos en la clase MisEmpleadosServiceImpl");
+		}
+		
+		return response;
+	}
+	
+	@Override
+	public ResponseDto getEmpleadosRFC(MisEmpleadosDTO nuevoEmpleadoRfc) {
+		ResponseDto response = new ResponseDto();
+		try {
+			//MisEmpleados datos = new MisEmpleados();
+			
+			MisEmpleados listaMisEmpleadosRFC = misEmpleadosDAO.obtieneMisEmpleadosRFC(nuevoEmpleadoRfc);
+			System.out.println(listaMisEmpleadosRFC);
+			if (listaMisEmpleadosRFC == null) {
+				response.setCode(100);
+				response.setMessage(" No existen registros en la tabla Mis_Empleados. ");
+			} else {
+				response.setCode(200);
+				response.setMessage(" El empleado con ese RFC es: ");
+				response.setContent(listaMisEmpleadosRFC);
+			}
+		} catch (Exception e) {
+			response.setCode(500);
+			response.setMessage(" Ocurrios un error en el metodos getEmpleadosMasculinos en la clase MisEmpleadosServiceImpl");
+		}
+		
+		return response;
+	}
+	
+	@Override
+	public ResponseDto insertMisEmpleados(MisEmpleadosDTO nuevoEmpleadoRfcYCurp) {
 		ResponseDto response = new ResponseDto();
 		/*
 		 * 1.- Un service para insertar nuevos empleados REGLA I.- Antes de insertar un
 		 * empleado verificar si ya EXISTE ese usuario en la base de datos
 		 */
-
 		try {
-			if (nuevoEmpleado != null) {
-				if (nuevoEmpleado.getNombreCompleto() != null && !nuevoEmpleado.getNombreCompleto().isEmpty()
-						&& nuevoEmpleado.getEdad() != 0 && nuevoEmpleado.getDireccion() != null
-						&& !nuevoEmpleado.getDireccion().isEmpty()) {
-
+			MisEmpleados consultaMisEmpleadosRfcYCurp = misEmpleadosDAO.obtieneMisEmpleadosRfcYCurp(nuevoEmpleadoRfcYCurp);
+			System.out.println(consultaMisEmpleadosRfcYCurp);
+			if (nuevoEmpleadoRfcYCurp != null) {
+				if (consultaMisEmpleadosRfcYCurp == null) {
 					MisEmpleados datos = new MisEmpleados();
 //					datos.setIdMiEmpleado(nuevoEmpleado.getIdMiEmpleado());
 					datos.setIdMiEmpleado(misEmpleadosDAO.obtenerValorSecuenciaTabla());
-					datos.setNombreCompleto(nuevoEmpleado.getNombreCompleto());
-					datos.setRfc(nuevoEmpleado.getRfc());
-					datos.setCurp(nuevoEmpleado.getCurp());
-					datos.setEdad(nuevoEmpleado.getEdad());
-					datos.setSexo(nuevoEmpleado.getSexo());
-					datos.setDireccion(nuevoEmpleado.getDireccion());
-					datos.setNss(nuevoEmpleado.getNss());
-					datos.setTelefono(nuevoEmpleado.getTelefono());
-					datos.setActivo(nuevoEmpleado.getActivo());
+					datos.setNombreCompleto(nuevoEmpleadoRfcYCurp.getNombreCompleto());
+					datos.setRfc(nuevoEmpleadoRfcYCurp.getRfc());
+					datos.setCurp(nuevoEmpleadoRfcYCurp.getCurp());
+					datos.setEdad(nuevoEmpleadoRfcYCurp.getEdad());
+					datos.setSexo(nuevoEmpleadoRfcYCurp.getSexo());
+					datos.setDireccion(nuevoEmpleadoRfcYCurp.getDireccion());
+					datos.setNss(nuevoEmpleadoRfcYCurp.getNss());
+					datos.setTelefono(nuevoEmpleadoRfcYCurp.getTelefono());
+					datos.setActivo(nuevoEmpleadoRfcYCurp.getActivo());
 
 					misEmpleadosDAO.create(datos); // Desde aqui se hace el insert
 					response.setCode(200);
-					response.setMessage(" Los datos del empleados se guardaron correctamente. )");
-
+					response.setMessage(" Los datos del empleados se guardaron correctamente. ");
 				} else {
 					response.setCode(300);
 					response.setMessage(
-							" Los datos obligatorios del empleado vienen vacios - (Nombre completo, edad y direccion. )");
+							" Los datos del empleado no pueden ser insertados porque ya existe su registro. ");
 				}
 			} else {
 				response.setCode(400);
 				response.setMessage(" Los datos del empleado vienen vacios. )");
 			}
-
 		} catch (Exception e) {
 			response.setCode(500);
 			response.setMessage(
-					" Ocurrio un error en la clase MisEmpleadosServiceImpl en el metodo insertMisEmpleados. )");
+					" Ocurrio un error en la clase MisEmpleadosServiceImpl en el metodo insertMisEmpleados. ");
 		}
 
 		return response;
 	}
 
 	@Override
-	public ResponseDto eliminarMiEmpleado(MisEmpleadosDTO idMiEmpleado) {
+	public ResponseDto eliminarMiEmpleado(MisEmpleadosDTO MisEmpleadosActivos) {
 		ResponseDto response = new ResponseDto();
 
 		/*
@@ -99,17 +163,11 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 		 */
 
 		try {
-			System.out.println(idMiEmpleado);
-			System.out.println(idMiEmpleado.getIdMiEmpleado());
-			System.out.println(idMiEmpleado.getNombreCompleto());
-			System.out.println(idMiEmpleado.getActivo());
-			
-//			MisEmpleadosDTO EmpleadoActivo = new MisEmpleadosDTO();
-//			EmpleadoActivo = misEmpleadosDAO.obtenerDatosPorActivo(long idMiEmpleado);
-
-			if (idMiEmpleado.getIdMiEmpleado() != 0) {
-				if (misEmpleadosDAO.saberSiEstaActivo() != 1) {
-					misEmpleadosDAO.delete(idMiEmpleado.getIdMiEmpleado());
+			MisEmpleados consultaMisEmpleadosActivos = misEmpleadosDAO.obtieneMisEmpleadosActivos(MisEmpleadosActivos);
+			System.out.println(consultaMisEmpleadosActivos);
+			if (MisEmpleadosActivos.getIdMiEmpleado() != 0) {
+				if (consultaMisEmpleadosActivos == null) {
+					misEmpleadosDAO.delete(MisEmpleadosActivos.getIdMiEmpleado());
 					response.setCode(200);
 					response.setMessage(" Empleado eliminado correctamente. ");
 				} else {
@@ -125,7 +183,7 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 		} catch (Exception e) {
 			response.setCode(500);
 			response.setMessage(
-					" Ocurrio un error en la clase MisEmpleadosServiceImpl en el metodo eliminarMiEmpleado. )");
+					" Ocurrio un error en la clase MisEmpleadosServiceImpl en el metodo eliminarMiEmpleado. ");
 		}
 
 		return response;
@@ -143,9 +201,11 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 			 * activo lanzar el mensaje ->
 			 * "El empleado esta dado de baja, No puede actualizar su informacion.! ")
 			 */
-			if (datos.getActivo() != 0) {
+			MisEmpleados consultaMisEmpleadosActivos = misEmpleadosDAO.obtieneMisEmpleadosActivos(datos);
+			System.out.println(consultaMisEmpleadosActivos);
+			if (consultaMisEmpleadosActivos != null) {
 				MisEmpleados datos2 = new MisEmpleados();
-				datos2.setIdMiEmpleado(datos.getIdMiEmpleado());
+				datos2.setIdMiEmpleado(datos.getIdMiEmpleado());//duda de si pedir el id en postman
 				datos2.setNombreCompleto(datos.getNombreCompleto());
 				datos2.setRfc(datos.getRfc());
 				datos2.setCurp(datos.getCurp());
@@ -154,7 +214,7 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 				datos2.setDireccion(datos.getDireccion());
 				datos2.setNss(datos.getNss());
 				datos2.setTelefono(datos.getTelefono());
-				datos2.setActivo(datos.getActivo());
+				datos2.setActivo(datos.getActivo());//PEDIR EN POSTMAN O NO
 
 				misEmpleadosDAO.update(datos2); // Desde aqui se hace el insert
 				response.setCode(200);
@@ -171,5 +231,9 @@ public class MisEmpleadosServiceImpl implements MisEmpleadosService {
 
 		return response;
 	}
+
+	
+
+
 
 } // fin de la clase
