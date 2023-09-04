@@ -27,6 +27,7 @@ public class MisEmpleadosDAOImpl extends GenericDAO<MisEmpleados, Long> implemen
 		return (List<MisEmpleados>) criteria.list();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	@Transactional
 	public Long obtenerValorSecuenciaTabla() {
@@ -51,6 +52,7 @@ public class MisEmpleadosDAOImpl extends GenericDAO<MisEmpleados, Long> implemen
 //		return (MisEmpleados) criteria.uniqueResult(); // Retornar un solo resultado
 //	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<MisEmpleados> obtieneMisEmpleadosMasculinos() {
@@ -61,6 +63,7 @@ public class MisEmpleadosDAOImpl extends GenericDAO<MisEmpleados, Long> implemen
 		return (List<MisEmpleados>) criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public List<MisEmpleados> obtieneMisEmpleadosF35() {
@@ -102,6 +105,41 @@ public class MisEmpleadosDAOImpl extends GenericDAO<MisEmpleados, Long> implemen
 		criteria.add(Restrictions.eq("activo", 1));
 		
 		return (MisEmpleados) criteria.uniqueResult();
+	}
+	
+	@Override
+	public boolean validarCURP(String curp) {
+		String expRegCurp = "^[A-Z]{4}\\d{6}[HM]{1}(AS|BC|BS|CC|CH|CL|CM|CS|DF|DG|GR|GT|HG|JC|MC|MN|MS|NE|NL|NT|OC|PL|QR|QT|SL|SP|SR|TC|TL|TS|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d]{1}\\d{1}$";
+
+		if (curp.matches(expRegCurp)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	public boolean validarRFC(String rfc) {
+		String expRegRfc = "^([A-ZÑ\\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$";
+
+		if (rfc.matches(expRegRfc)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	public boolean validarNSS(String nss) {
+		String expRegNum = "^[0-9]{10}$";
+
+		if (nss.matches(expRegNum)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	

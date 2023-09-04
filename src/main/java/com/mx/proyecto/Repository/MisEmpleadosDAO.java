@@ -21,6 +21,11 @@ public interface MisEmpleadosDAO extends DAO<MisEmpleados, Long> {
 
 	MisEmpleados obtieneMisEmpleadosActivos(MisEmpleadosDTO MisEmpleadosActivos);
 
+	boolean validarRFC(String rfc);
+
+	boolean validarCURP(String curp);
+
+	boolean validarNSS(String nss);
 
 	
 	
